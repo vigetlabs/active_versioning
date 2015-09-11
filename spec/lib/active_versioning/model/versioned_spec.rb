@@ -94,14 +94,24 @@ RSpec.describe ActiveVersioning::Model::Versioned do
   end
 
   describe "#create_draft_from_version" do
-    let!(:version) { subject.current_draft }
-
-    before { version.commit }
+    let!(:version) do
+      subject.versions.committed.create(
+        event:  'commit',
+        object: { title: 'Random Title', body: 'Random body text.' }
+      )
+    end
 
     it "creates a new draft from the given version" do
       expect {
         subject.create_draft_from_version(version.id)
       }.to change { subject.versions.count }.by 1
+    end
+
+    it "creates a new draft with the same object as the given version" do
+      subject.create_draft_from_version(version.id)
+
+      expect(subject.current_draft.title).to eq 'Random Title'
+      expect(subject.current_draft.body).to eq 'Random body text.'
     end
   end
 
