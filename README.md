@@ -18,7 +18,13 @@ Or install it yourself as:
 
     $ gem install active_versioning
 
+Once installed, generate the necessary files and run migrations:
+
+    $ rails generate active_versioning
+    $ bundle exec rake db:migrate
+
 ## Setup
+
 To set up versioning in your Rails app, include the following module in each model you'd like to version:
 ```ruby
 class Post < ActiveRecord::Base
@@ -57,6 +63,7 @@ post.destroy_draft
 ```
 
 ## Working with Versions
+
 A draft is just a version with a particular state.  To access all the versions for a particular record, use...
 ```ruby
 post.versions              # => All versions, whether the version state is 'create', 'draft', or 'commit'
@@ -74,6 +81,7 @@ post.create_draft_from_version(old_version.id)
 This will set `post.current_draft`'s attributes to the attributes stored in the given version's record. Returns boolean based on the save's success.
 
 ## Capturing Version Metadata
+
 In addition to manually committing a version with a committer and commit message...
 ```ruby
 post.current_draft.commit(committer: current_admin.full_name, commit_message: 'Update post title.')
