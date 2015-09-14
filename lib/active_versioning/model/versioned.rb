@@ -3,10 +3,6 @@ module ActiveVersioning
     module Versioned
       RecordNotPersisted = Class.new(StandardError)
 
-      mattr_accessor :blacklisted_attributes do
-        %w(created_at updated_at published)
-      end
-
       def self.included(base)
         base.class_eval do
           has_many :versions, -> { newest_first }, as: :versionable, dependent: :destroy
@@ -33,17 +29,10 @@ module ActiveVersioning
 
         @current_draft = nil if force_reload
 
-        @current_draft ||= begin
-          # FIXME: Gracefully handle NoMethodError and UnknownAttributeError
-          # If past versions contain renamed/different attributes, this causes problems
-          # Detect such attributes and warn appropriately.
-          # Create a nice errors object that encapsulates this information that can be used to diff.
-
-          VersionProxy.new(versions.draft.first_or_create(
-            object: versioned_attributes,
-            event:  ActiveVersioning::Events::DRAFT
-          ))
-        end
+        @current_draft ||= VersionProxy.new(versions.draft.first_or_create(
+          object: versioned_attributes,
+          event:  'draft'
+        ))
       end
 
       def current_draft?
@@ -54,11 +43,12 @@ module ActiveVersioning
         versions.draft.destroy_all
       end
 
-      # Usage: resource.create_draft_from_version(params[:version_id])
+      def version_manager
+        @version_manager ||= VersionManager.new(self)
+      end
+
       def create_draft_from_version(version_id)
-        original_version = versions.find(version_id)
-        current_draft(true).assign_attributes(original_version.object)
-        current_draft.save
+        version_manager.create_draft_from_version(version_id) and current_draft(true)
       end
 
       def versioned_attributes
@@ -67,9 +57,8 @@ module ActiveVersioning
         end
       end
 
-      # Overridable in the class to add things like `photo_id`
       def versioned_attribute_names
-        attribute_names - blacklisted_attributes
+        attribute_names - VersionManager::BLACKLISTED_ATTRIBUTES
       end
 
       private

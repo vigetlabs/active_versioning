@@ -41,6 +41,7 @@ RSpec.describe ActiveVersioning::Model do
     context "with an object containing unknown attributes" do
       let!(:version) do
         ActiveVersioning::Test::Version.create(
+          event:       'commit',
           versionable: post,
           object:      { 'title' => 'Ruh Roh', 'rating' => '4 Stars' },
         )

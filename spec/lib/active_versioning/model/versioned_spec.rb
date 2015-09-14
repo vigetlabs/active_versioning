@@ -97,7 +97,7 @@ RSpec.describe ActiveVersioning::Model::Versioned do
     let!(:version) do
       subject.versions.committed.create(
         event:  ActiveVersioning::Events::COMMIT,
-        object: { title: 'Random Title', body: 'Random body text.' }
+        object: { 'title' => 'Random Title', 'body' => 'Random body text.' }
       )
     end
 
