@@ -53,7 +53,7 @@ Both `save` and `update` will make changes to the draft version of the post.
 
 When you are ready to overwrite the record with its draft, use...
 ```ruby
-draft.commit(committer: current_admin.full_name, commit_message: 'Update post title.')
+draft.commit(committer: 'Bob', commit_message: 'Update post title.')
 ```
 This changes our post's attributes to match those of the draft and then marks the draft as a committed version.
 
@@ -84,7 +84,7 @@ This will set `post.current_draft`'s attributes to the attributes stored in the 
 
 In addition to manually committing a version with a committer and commit message...
 ```ruby
-post.current_draft.commit(committer: current_admin.full_name, commit_message: 'Update post title.')
+post.current_draft.commit(committer: 'Bob', commit_message: 'Update post title.')
 ```
 ActiveVersioning provides a `version_author` accessor on any versioned model, so you can capture the author for a record's initial create:
 ```ruby
