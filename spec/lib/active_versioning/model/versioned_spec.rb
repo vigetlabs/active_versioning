@@ -96,7 +96,7 @@ RSpec.describe ActiveVersioning::Model::Versioned do
   describe "#create_draft_from_version" do
     let!(:version) do
       subject.versions.committed.create(
-        event:  'commit',
+        event:  ActiveVersioning::Events::COMMIT,
         object: { title: 'Random Title', body: 'Random body text.' }
       )
     end

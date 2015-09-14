@@ -139,7 +139,7 @@ RSpec.describe ActiveVersioning::Model::VersionProxy do
       subject.commit(commit_message: 'Update post name.')
 
       expect(version.reload.draft).to eq false
-      expect(version.event).to eq 'commit'
+      expect(version.event).to eq ActiveVersioning::Events::COMMIT
       expect(version.commit_message).to eq 'Update post name.'
       expect(post.reload.title).to eq 'Test'
     end

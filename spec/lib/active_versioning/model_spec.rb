@@ -17,6 +17,7 @@ RSpec.describe ActiveVersioning::Model do
   it { should serialize(:object).as(Hash) }
 
   it { should validate_presence_of(:event) }
+  it { should validate_inclusion_of(:event).in_array(ActiveVersioning::Events::ALL) }
 
   describe "#to_s" do
     it { expect(subject.to_s).to match(/^#{post.to_s}/) }

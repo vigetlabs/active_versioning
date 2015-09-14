@@ -10,7 +10,7 @@ module ActiveVersioning
 
       serialize :object, Hash
 
-      validates :event, presence: true
+      validates :event, presence: true, inclusion: { in: ActiveVersioning::Events::ALL }
 
       scope :newest_first, -> { order created_at: :desc }
       scope :draft,        -> { where draft: true }

@@ -41,7 +41,7 @@ module ActiveVersioning
 
           VersionProxy.new(versions.draft.first_or_create(
             object: versioned_attributes,
-            event:  'draft'
+            event:  ActiveVersioning::Events::DRAFT
           ))
         end
       end
@@ -76,7 +76,7 @@ module ActiveVersioning
 
       def create_version!
         versions.create!(
-          event:        'create',
+          event:        ActiveVersioning::Events::CREATE,
           committer:    version_author,
           committed_at: Time.current,
           object:       versioned_attributes

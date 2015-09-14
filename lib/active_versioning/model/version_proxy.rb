@@ -90,7 +90,7 @@ module ActiveVersioning
         attrs = version_attributes.tap do |attrs|
           attrs.merge!(
             draft:        false,
-            event:        'commit',
+            event:        ActiveVersioning::Events::COMMIT,
             committed_at: Time.current
           )
 
