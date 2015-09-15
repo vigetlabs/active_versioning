@@ -1,8 +1,6 @@
 module ActiveVersioning
   module Model
     module Versioned
-      RecordNotPersisted = Class.new(StandardError)
-
       def self.included(base)
         base.class_eval do
           has_many :versions, -> { newest_first }, as: :versionable, dependent: :destroy
@@ -24,7 +22,7 @@ module ActiveVersioning
 
       def current_draft(force_reload = false)
         unless persisted?
-          raise RecordNotPersisted.new("#{self} must be persisted to create a draft version")
+          raise ActiveVersioning::Errors::RecordNotPersisted.new("#{self} must be persisted to create a draft version")
         end
 
         @current_draft = nil if force_reload

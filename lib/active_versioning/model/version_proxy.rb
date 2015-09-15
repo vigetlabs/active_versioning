@@ -105,7 +105,7 @@ module ActiveVersioning
       private
 
       def draft_exception
-        VersionInvalid.new("Version #{version.id} must be a draft")
+        ActiveVersioning::Errors::InvalidVersion.new("Version #{version.id} must be a draft")
       end
 
       def version_attributes

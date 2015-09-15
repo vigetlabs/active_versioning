@@ -148,7 +148,7 @@ RSpec.describe ActiveVersioning::Model::VersionProxy do
       subject { described_class.new(post.versions.committed.first) }
 
       it "raises an error" do
-        expect { subject.commit }.to raise_error(ActiveVersioning::Model::VersionProxy::VersionInvalid)
+        expect { subject.commit }.to raise_error(ActiveVersioning::Errors::InvalidVersion)
       end
     end
   end

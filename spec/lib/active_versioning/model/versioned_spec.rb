@@ -36,7 +36,7 @@ RSpec.describe ActiveVersioning::Model::Versioned do
       subject { ActiveVersioning::Test::Post.new }
 
       it "raises an error" do
-        expect { subject.current_draft }.to raise_error(ActiveVersioning::Model::Versioned::RecordNotPersisted)
+        expect { subject.current_draft }.to raise_error(ActiveVersioning::Errors::RecordNotPersisted)
       end
     end
 

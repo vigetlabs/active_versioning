@@ -1,13 +1,4 @@
 module ActiveVersioning
-  class IncompatibleVersionError < StandardError
-    attr_reader :record, :version
-
-    def initialize(record, version)
-      @record  = record
-      @version = version
-    end
-  end
-
   class VersionManager < Struct.new(:record)
     BLACKLISTED_ATTRIBUTES = %w(
       created_at
@@ -28,7 +19,7 @@ module ActiveVersioning
     def ensure_compatibility_with(version)
       incompatible_attributes(version).tap do |incompatible_attrs|
         if incompatible_attrs.any?
-          raise IncompatibleVersionError.new(record, version), "The given version contained the following attributes that are no longer compatible with the current schema: #{incompatible_attrs.to_sentence}."
+          raise Errors::IncompatibleVersion.new(record, version), "The given version contained the following attributes that are no longer compatible with the current schema: #{incompatible_attrs.to_sentence}."
         end
       end
     end
