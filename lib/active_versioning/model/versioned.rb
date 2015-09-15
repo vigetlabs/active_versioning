@@ -7,7 +7,6 @@ module ActiveVersioning
 
           after_create :create_version!
 
-          # Set by controller params
           attr_accessor :version_author
         end
       end

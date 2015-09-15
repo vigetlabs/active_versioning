@@ -25,7 +25,7 @@ RSpec.describe ActiveVersioning::VersionManager do
         begin
           subject.create_draft_from_version(incompatible_version.id)
         rescue ActiveVersioning::Errors::IncompatibleVersion => error
-          expect(error.message).to eq 'The given version contained the following attributes that are no longer compatible with the current schema: rating.'
+          expect(error.message).to eq 'The given version contains attributes that are no longer compatible with the current schema: rating.'
           expect(error.record).to eq post
           expect(error.version).to eq incompatible_version
         end

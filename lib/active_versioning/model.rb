@@ -26,7 +26,7 @@ module ActiveVersioning
       def reify
         resource = versionable(true)
 
-        # Reload the versionable so we get a new one
+        # Necessary to ensure resource and versionable are two distinct objects in memory
         versionable(true)
 
         resource.assign_attributes(object.slice(*resource.versioned_attribute_names))

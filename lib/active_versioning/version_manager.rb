@@ -19,7 +19,7 @@ module ActiveVersioning
     def ensure_compatibility_with(version)
       incompatible_attributes(version).tap do |incompatible_attrs|
         if incompatible_attrs.any?
-          raise Errors::IncompatibleVersion.new(record, version), "The given version contained the following attributes that are no longer compatible with the current schema: #{incompatible_attrs.to_sentence}."
+          raise Errors::IncompatibleVersion.new(record, version), "The given version contains attributes that are no longer compatible with the current schema: #{incompatible_attrs.to_sentence}."
         end
       end
     end
