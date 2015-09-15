@@ -110,3 +110,29 @@ class Post < ActiveRecord::Base
   end
 end
 ```
+
+## Handling Incompatible Versions
+
+In the case of a versioned model that undergoes a schema change, all previous versions may reference attributes that no longer exist.
+
+In ActiveVersioning, we consider these incompatible versions.  An attempt to create a draft from an incompatible version will raise an error:
+```
+incompatible_version = post.versions.committed.last
+
+incompatible_version.object
+# => { 'deleted_attribute' => value }
+
+post.create_draft_from_version(incompatible_version.id)
+# => ActiveVersioning::Errors::IncompatibleVersion:
+# The given version contains attributes that are no longer compatible with the current schema: deleted_attribute.
+```
+
+When rescued, the error object contains a reference to the record and the incompatible version:
+```
+begin
+  post.create_draft_from_version(incompatible_version.id)
+rescue ActiveVersioning::Errors::IncompatibleVersion => error
+  error.record  # => our `post` record
+  error.version # => our `incompatible_version`
+end
+```
