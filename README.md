@@ -1,5 +1,7 @@
 # ActiveVersioning
 
+[![Gem Version](https://badge.fury.io/rb/active_versioning.svg)](http://badge.fury.io/rb/active_versioning) [![Code Climate](https://codeclimate.com/github/vigetlabs/active_versioning/badges/gpa.svg)](https://codeclimate.com/github/vigetlabs/active_versioning) [![Test Coverage](https://codeclimate.com/github/vigetlabs/active_versioning/badges/coverage.svg)](https://codeclimate.com/github/vigetlabs/active_versioning/coverage) [![Circle CI](https://circleci.com/gh/vigetlabs/active_versioning.svg?style=svg)](https://circleci.com/gh/vigetlabs/active_versioning)
+
 ActiveVersioning provides out-of-the-box versioning functionality in Rails.  ActiveVersioning serializes attributes when records are saved and allows for version and draft management.
 
 ## Installation
