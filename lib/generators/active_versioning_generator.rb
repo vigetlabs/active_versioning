@@ -1,4 +1,5 @@
-require 'rails/generators/active_record/migration'
+require 'rails/generators'
+require 'rails/generators/active_record'
 
 class ActiveVersioningGenerator < Rails::Generators::Base
   include ActiveRecord::Generators::Migration
