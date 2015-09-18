@@ -22,7 +22,7 @@ Or install it yourself as:
 
 Once installed, generate the necessary files and run migrations:
 
-    $ rails generate active_versioning
+    $ rails generate active_versioning:install
     $ bundle exec rake db:migrate
 
 ## Setup
