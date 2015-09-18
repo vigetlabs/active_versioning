@@ -34,3 +34,11 @@ RSpec.configure do |config|
     DatabaseCleaner.clean
   end
 end
+
+# Stub rails application when necessary.
+unless Rails.application.present?
+  Rails.application = OpenStruct.new(
+    config:      OpenStruct.new(eager_load: false),
+    eager_load!: true
+  )
+end
