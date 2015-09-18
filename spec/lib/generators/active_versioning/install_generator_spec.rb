@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-RSpec.describe ActiveVersioningGenerator, type: :generator do
-  destination File.expand_path('../../../../tmp', __FILE__)
+RSpec.describe ActiveVersioning::InstallGenerator, type: :generator do
+  destination File.expand_path('../../../../../tmp', __FILE__)
 
   before do
     prepare_destination
