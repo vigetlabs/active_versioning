@@ -3,13 +3,11 @@ CodeClimate::TestReporter.start
 
 $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
 
-require 'rails'
-require 'active_record'
+require 'active_versioning'
 require 'database_cleaner'
 require 'pry'
 require 'generator_spec'
 require 'shoulda/matchers'
-require 'active_versioning'
 
 %w(
   /fixtures/**/*.rb

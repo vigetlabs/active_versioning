@@ -1,3 +1,4 @@
+require 'rails'
 require 'active_versioning/version'
 require 'generators/active_versioning/install_generator'
 
