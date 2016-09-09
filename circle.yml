@@ -4,3 +4,6 @@ database:
 dependencies:
   pre:
     - gem install bundler --pre
+machine:
+  ruby:
+    version: 2.3.1
