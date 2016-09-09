@@ -102,6 +102,15 @@ If you want to see the attributes the are versioned, use...
 post.versioned_attributes # => { 'id' => 1, 'title' => 'Default Title' }
 ```
 
+By default, ActiveVersioning blacklists the following attributes:
+```ruby
+ActiveVersioning::VersionManager::BLACKLISTED_ATTRIBUTES = %w(
+  created_at
+  updated_at
+  published
+)
+```
+
 If you require additional versioned attributes, overwrite the `versioned_attribute_names` method in your model:
 ```ruby
 class Post < ActiveRecord::Base
