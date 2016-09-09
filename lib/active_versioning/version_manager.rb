@@ -25,7 +25,7 @@ module ActiveVersioning
     end
 
     def incompatible_attributes(version)
-      version.object.keys - record.attributes.keys
+      version.object.keys - record.versioned_attributes.keys
     end
   end
 end
