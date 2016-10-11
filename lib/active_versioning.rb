@@ -10,7 +10,7 @@ module ActiveVersioning
 
   def self.versioned_models
     @@versioned_models ||= begin
-      Rails.application.eager_load! unless Rails.application.config.eager_load
+      Rails.application.eager_load!
 
       ActiveRecord::Base.descendants.select do |model|
         model.included_modules.include? Model::Versioned
