@@ -24,10 +24,10 @@ module ActiveVersioning
       end
 
       def reify
-        resource = versionable(true)
+        resource = reload_versionable
 
         # Necessary to ensure resource and versionable are two distinct objects in memory
-        versionable(true)
+        reload_versionable
 
         resource.assign_attributes(object.slice(*resource.versioned_attribute_names))
         resource

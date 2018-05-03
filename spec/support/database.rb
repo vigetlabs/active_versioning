@@ -1,6 +1,6 @@
 module ActiveVersioning
   module Test
-    class Database < ActiveRecord::Migration
+    class Database < ActiveRecord::Migration[5.2]
       def self.build
         ActiveRecord::Base.establish_connection(
           adapter:  'sqlite3',
