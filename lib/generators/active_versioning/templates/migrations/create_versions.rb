@@ -1,4 +1,9 @@
-class CreateVersions < ActiveRecord::Migration
+<%
+  parent_class = ActiveRecord::Migration
+  parent_class = parent_class[parent_class.current_version] if Rails::VERSION::MAJOR >= 5
+-%>
+
+class CreateVersions < <%= parent_class.to_s %>
   def change
     create_table :versions do |t|
       t.string   :versionable_type, null: false
