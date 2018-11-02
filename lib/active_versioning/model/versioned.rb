@@ -48,14 +48,35 @@ module ActiveVersioning
         version_manager.create_draft_from_version(version_id) and current_draft(true)
       end
 
-      def versioned_attributes
+      def self_attributes
         versioned_attribute_names.reduce(Hash.new) do |attrs, name|
-          attrs.merge(name => send(name))
+          attrs.merge(name => public_send(name))
         end
+      end
+
+      def nested_attributes
+        versioned_nested_attribute_names.reduce(Hash.new) do |attrs, name|
+          if nested_attributes_names.include?(name)
+            nested_attrs = public_send(name).try(:public_send, :attributes)
+            attrs.merge("#{name}_attributes" => nested_attrs) if nested_attrs.present?
+          end
+        end || {}
+      end
+
+      def versioned_attributes
+        self_attributes.merge(nested_attributes)
+      end
+
+      def nested_attributes_names
+        nested_attributes_options.keys.map(&:to_s)
       end
 
       def versioned_attribute_names
         attribute_names - VersionManager::BLACKLISTED_ATTRIBUTES
+      end
+
+      def versioned_nested_attribute_names
+        []
       end
 
       private

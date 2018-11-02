@@ -94,6 +94,18 @@ RSpec.describe ActiveVersioning::Model::VersionProxy do
       end
     end
 
+    context "given valid nested attributes" do
+      it "updates the version" do
+        subject.update(
+          author_attributes: { name: 'Clark Griswold' },
+        )
+
+        subject.reload
+
+        expect(subject.author.name).to eq 'Clark Griswold'
+      end
+    end
+
     context "given invalid attributes" do
       it "does not update the version" do
         subject.update(title: '')

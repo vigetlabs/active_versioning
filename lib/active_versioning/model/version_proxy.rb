@@ -60,7 +60,7 @@ module ActiveVersioning
         raise draft_exception unless version.draft?
 
         with_transaction_returning_status do
-          assign_attributes(attributes)
+          super(attributes)
           save
         end
       end
@@ -70,7 +70,7 @@ module ActiveVersioning
         raise draft_exception unless version.draft?
 
         with_transaction_returning_status do
-          assign_attributes(attributes)
+          super(attributes)
           save!
         end
       end

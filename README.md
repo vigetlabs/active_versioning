@@ -122,6 +122,29 @@ class Post < ActiveRecord::Base
 end
 ```
 
+## Nested Attributes
+It's possible to version nested attributes in conjunction with Rails'
+`accepts_nested_attributes_for`. To do this, you'll need to setup the
+relationships as usual, and opt-in by overriding
+`versioned_nested_attribute_names` adding the relationship name without the
+`_attributes` suffix.
+
+```ruby
+class Post < ActiveRecord::Base
+
+  belongs_to :author
+
+  accepts_nested_attributes_for :author
+
+  private
+
+  def versioned_nested_attribute_names
+   super + %w[author]
+  end
+end
+```
+
+
 ## Handling Incompatible Versions
 
 In the case of a versioned model that undergoes a schema change, all previous versions may reference attributes that no longer exist.

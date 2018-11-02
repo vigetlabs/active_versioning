@@ -116,17 +116,56 @@ RSpec.describe ActiveVersioning::Model::Versioned do
   end
 
   describe "#versioned_attributes" do
+    let(:test_post) { ActiveVersioning::Test::Post.create(
+        title: 'So Post',
+        body: 'Such interesting.  Very wow.',
+        author_attributes: {
+          name: 'This should work',
+          email: 'working@example.com'
+        }
+      )
+    }
+
     it "returns a hash of the attributes and their values" do
       expect(subject.versioned_attributes).to eq(
         'id'      => subject.id,
         'title'   => 'So Post',
         'body'    => 'Such interesting.  Very wow.',
-        'user_id' => user.id
+        'user_id' => user.id,
+        'author_attributes'  => {
+          'id' => user.id,
+          'name' => user.name,
+          'email' => user.email
+        }
       )
+    end
+
+    it "allows nested_attributes_for to work with creates" do
+      attrs = test_post.versioned_attributes['author_attributes']
+
+      expect(attrs['name']).to eq('This should work')
+      expect(attrs['email']).to eq('working@example.com')
+    end
+
+    it "allows nested_attributes_for to work with updates" do
+      test_post.update(
+        author_attributes: {
+          name: 'This should work',
+          email: 'working@example.com'
+        }
+      )
+
+      attrs = test_post.versioned_attributes['author_attributes']
+      expect(attrs['name']).to eq('This should work')
+      expect(attrs['email']).to eq('working@example.com')
     end
   end
 
   describe "#versioned_attribute_names" do
     it { expect(subject.versioned_attribute_names).to match_array %w(title body id user_id) }
+  end
+
+  describe "#versioned_nested_attribute_names" do
+    it { expect(subject.versioned_nested_attribute_names).to match_array %w(author) }
   end
 end
