@@ -136,13 +136,18 @@ class Post < ActiveRecord::Base
 
   accepts_nested_attributes_for :author
 
-  private
-
+  # Opt-in to versioning the author attributes with below
   def versioned_nested_attribute_names
    super + %w[author]
   end
 end
 ```
+
+Using `author` as an example, the way it works is by saving `author_attributes`
+to the versions table as part of the attributes hash of the resource itself.
+When the version is committed, it passes the `author_attributes` to the resource
+like normal, and Rails' `accepts_nested_attributes_for` helper allows this to
+work.
 
 
 ## Handling Incompatible Versions
