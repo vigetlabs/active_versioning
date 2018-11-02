@@ -28,9 +28,25 @@ module ActiveVersioning
 
         # Necessary to ensure resource and versionable are two distinct objects in memory
         reload_versionable
-
-        resource.assign_attributes(object.slice(*resource.versioned_attribute_names))
+        reify_self_attributes(resource)
+        reify_nested_attributes(resource)
         resource
+      end
+
+      def reify_self_attributes(resource)
+        attrs = object.slice(*resource.versioned_attribute_names)
+        resource.assign_attributes(attrs)
+      end
+
+      def reify_nested_attributes(resource)
+        resource.versioned_nested_attribute_names.each do |relationship|
+          relationship_attrs = object["#{relationship}_attributes"]
+          resource.send(
+            :assign_nested_attributes_for_one_to_one_association,
+            relationship.to_sym,
+            relationship_attrs
+          ) if relationship_attrs.present?
+        end
       end
     end
   end
