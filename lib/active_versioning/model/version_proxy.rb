@@ -99,7 +99,7 @@ module ActiveVersioning
 
         version.update(attrs)
 
-        __getobj__.update(versioned_attributes)
+        version.versionable.update(versioned_attributes)
       end
 
       private
