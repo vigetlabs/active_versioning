@@ -98,5 +98,22 @@ RSpec.describe "assigning nested attributes" do
     }.from(["First"]).to(["First!", "Second!"])
   end
 
-  # deletes has-many relationships
+  it "deletes has-many relationships" do
+    subject.assign_attributes(comments_attributes: [{ body: "First" }])
+    subject.save
+    subject.commit
+
+    p = ActiveVersioning::Test::Post.find(post.id).current_draft
+
+    p.assign_attributes(comments_attributes: [{ id: p.comments.first.id, _destroy: "1" }])
+    p.save
+
+    p = ActiveVersioning::Test::Post.find(post.id).current_draft
+
+    expect {
+      p.commit
+    }.to change {
+      ActiveVersioning::Test::Comment.pluck(:body)
+    }.from(["First"]).to([])
+  end
 end
