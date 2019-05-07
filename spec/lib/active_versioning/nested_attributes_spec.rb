@@ -57,7 +57,46 @@ RSpec.describe "assigning nested attributes" do
     expect { p.commit }.to change { ActiveVersioning::Test::Comment.count }.by(2)
   end
 
-  # updates existing has-many relationships
-  # creates and updates has-many relationships simultaneously
+  it "updates existing has-many relationships" do
+    subject.assign_attributes(comments_attributes: [{ body: "First" }])
+    subject.save
+    subject.commit
+
+    p = ActiveVersioning::Test::Post.find(post.id).current_draft
+
+    p.assign_attributes(comments_attributes: [{ id: p.comments.first.id, body: "First!" }])
+    p.save
+
+    p = ActiveVersioning::Test::Post.find(post.id).current_draft
+
+    expect {
+      p.commit
+    }.to change {
+      ActiveVersioning::Test::Comment.pluck(:body)
+    }.from(["First"]).to(["First!"])
+  end
+
+  it "creates and updates has-many relationships simultaneously" do
+    subject.assign_attributes(comments_attributes: [{ body: "First" }])
+    subject.save
+    subject.commit
+
+    p = ActiveVersioning::Test::Post.find(post.id).current_draft
+
+    p.assign_attributes(comments_attributes: [
+      { id: p.comments.first.id, body: "First!" },
+      { body: "Second!" }
+    ])
+    p.save
+
+    p = ActiveVersioning::Test::Post.find(post.id).current_draft
+
+    expect {
+      p.commit
+    }.to change {
+      ActiveVersioning::Test::Comment.pluck(:body)
+    }.from(["First"]).to(["First!", "Second!"])
+  end
+
   # deletes has-many relationships
 end
