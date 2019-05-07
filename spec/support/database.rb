@@ -28,6 +28,14 @@ module ActiveVersioning
           t.timestamps null: false
         end
 
+        create_table :comments do |t|
+          t.string     :author
+          t.text       :body
+          t.references :post, index: true, foreign_key: true
+
+          t.timestamps null: false
+        end
+
         create_table :versions do |t|
           t.string   :versionable_type, null: false
           t.integer  :versionable_id,   null: false
