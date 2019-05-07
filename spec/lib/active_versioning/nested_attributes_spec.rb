@@ -5,7 +5,7 @@ RSpec.describe "assigning nested attributes" do
     ActiveVersioning::Test::Post.create(
       title: 'So Post',
       body: 'Such interesting. Very wow.'
-    ) 
+    )
   end
 
   let!(:committed_at) { Time.utc(2014, 11, 26, 12, 42, 35) }

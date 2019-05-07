@@ -63,7 +63,9 @@ module ActiveVersioning
             nested_attrs = if reflection.belongs_to? || reflection.has_one?
               public_send(name).try(:public_send, :attributes)
             else
-              public_send(name).map { |a| a.attributes }
+              public_send(name).map do |a|
+                a.attributes.merge(_destroy: a.marked_for_destruction?)
+              end
             end
 
             if nested_attrs.present?
