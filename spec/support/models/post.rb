@@ -21,7 +21,7 @@ module ActiveVersioning
       end
 
       def versioned_nested_attribute_names
-        super + %w[author]
+        super + %w[author comments]
       end
     end
   end

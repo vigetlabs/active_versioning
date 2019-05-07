@@ -44,5 +44,18 @@ RSpec.describe ActiveVersioning::Model::Versioned do
         ActiveVersioning::Test::User.first.name
       }.from("Steve").to("Steeve")
     end
+
+    it "creates a new has-many relationship" do
+      expect {
+        subject.assign_attributes(comments_attributes: [{ body: "First" }, { body: "Second" }])
+        subject.save
+      }.not_to change {
+        ActiveVersioning::Test::Comment.count
+      }
+
+      p = ActiveVersioning::Test::Post.find(post.id).current_draft
+
+      expect { p.commit }.to change { ActiveVersioning::Test::Comment.count }.by(2)
+    end
   end
 end
