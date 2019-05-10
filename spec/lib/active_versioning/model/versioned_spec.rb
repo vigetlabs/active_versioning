@@ -166,6 +166,6 @@ RSpec.describe ActiveVersioning::Model::Versioned do
   end
 
   describe "#versioned_nested_attribute_names" do
-    it { expect(subject.versioned_nested_attribute_names).to match_array %w(author) }
+    it { expect(subject.versioned_nested_attribute_names).to match_array %w(author comments) }
   end
 end

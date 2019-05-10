@@ -41,11 +41,24 @@ module ActiveVersioning
       def reify_nested_attributes(resource)
         resource.versioned_nested_attribute_names.each do |relationship|
           relationship_attrs = object["#{relationship}_attributes"]
-          resource.send(
-            :assign_nested_attributes_for_one_to_one_association,
-            relationship.to_sym,
-            relationship_attrs
-          ) if relationship_attrs.present?
+
+          if relationship_attrs.present?
+            reflection = resource.association(relationship).reflection
+
+            if reflection.has_one? || reflection.belongs_to?
+              resource.send(
+                :assign_nested_attributes_for_one_to_one_association,
+                relationship.to_sym,
+                relationship_attrs
+              )
+            else
+              resource.send(
+                :assign_nested_attributes_for_collection_association,
+                relationship.to_sym,
+                relationship_attrs
+              )
+            end
+          end
         end
       end
     end

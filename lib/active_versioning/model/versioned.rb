@@ -54,11 +54,32 @@ module ActiveVersioning
         end
       end
 
+      # Reload model before assigning attributes in order to clear
+      # out existing unsaved nested attributes
+      def assign_attributes(attributes)
+        reload if persisted?
+        super
+      end
+
       def nested_attributes
         versioned_nested_attribute_names.reduce(Hash.new) do |attrs, name|
           if nested_attributes_names.include?(name)
-            nested_attrs = public_send(name).try(:public_send, :attributes)
-            attrs.merge("#{name}_attributes" => nested_attrs) if nested_attrs.present?
+            nested_association = association(name)
+            reflection = nested_association.reflection
+
+            nested_attrs = if reflection.belongs_to? || reflection.has_one?
+              public_send(name).try(:public_send, :attributes)
+            else
+              public_send(name).map do |a|
+                a.attributes.merge(_destroy: a.marked_for_destruction?)
+              end
+            end
+
+            if nested_attrs.present?
+              attrs.merge("#{name}_attributes" => nested_attrs)
+            else
+              attrs
+            end
           end
         end || {}
       end
