@@ -116,4 +116,19 @@ RSpec.describe "assigning nested attributes" do
       ActiveVersioning::Test::Comment.pluck(:body)
     }.from(["First"]).to([])
   end
+
+  it "saving w/ new has-many relationship twice" do
+    subject.assign_attributes(comments_attributes: [{ body: "First" }])
+    subject.save
+
+    p = ActiveVersioning::Test::Post.find(post.id).current_draft
+
+    p.version.versionable.reload
+    p.assign_attributes(comments_attributes: [{ body: "First" }])
+    p.save
+
+    p = ActiveVersioning::Test::Post.find(post.id).current_draft
+
+    expect { p.commit }.to change { ActiveVersioning::Test::Comment.count }.by(1)
+  end
 end

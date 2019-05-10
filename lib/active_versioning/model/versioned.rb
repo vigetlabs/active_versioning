@@ -54,6 +54,13 @@ module ActiveVersioning
         end
       end
 
+      # Reload model before assigning attributes in order to clear
+      # out existing unsaved nested attributes
+      def assign_attributes(attributes)
+        reload if persisted?
+        super
+      end
+
       def nested_attributes
         versioned_nested_attribute_names.reduce(Hash.new) do |attrs, name|
           if nested_attributes_names.include?(name)
