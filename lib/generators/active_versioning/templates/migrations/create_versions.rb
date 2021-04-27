@@ -1,4 +1,4 @@
-class CreateVersions < ActiveRecord::Migration
+class CreateVersions < ActiveRecord::Migration[<%= ActiveRecord::Migration.current_version %>]
   def change
     create_table :versions do |t|
       t.string   :versionable_type, null: false
